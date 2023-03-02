@@ -1,11 +1,14 @@
 const url1 = "https://openapi.programming-hero.com/api/ai/tools";
 
+// fetching data
 const fetchData = (url, load) => {
+  toggleSpinner(true);
   fetch(url)
     .then((res) => res.json())
     .then((data) => loadData(data, load));
 };
 
+// load data dynamically
 const loadData = (data, moreLoad) => {
   const cardContainer = document.getElementById("card-container");
   let allAiData = data.data.tools;
@@ -13,6 +16,7 @@ const loadData = (data, moreLoad) => {
     allAiData = allAiData;
   } else {
     allAiData = allAiData.slice(0, 6);
+    document.getElementById("see-more").classList.remove("d-none");
   }
 
   cardContainer.innerHTML = "";
@@ -51,18 +55,32 @@ const loadData = (data, moreLoad) => {
               </div>
             </div>
           </div>
+          
     `;
 
     cardContainer.appendChild(div);
     console.log(singleData);
   });
+  toggleSpinner(false);
 };
 
-fetchData(url1, false);
-
-const seeMore = document
+// See more button to load more data
+const seeMoreBtn = document
   .getElementById("see-more")
   .addEventListener("click", function () {
     fetchData(url1, true);
     document.getElementById("see-more").classList.add("d-none");
   });
+
+// loader
+const toggleSpinner = (isLoading) => {
+  const loaderSection = document.getElementById("loader-id");
+
+  if (isLoading) {
+    loaderSection.classList.remove("d-none");
+  } else {
+    loaderSection.classList.add("d-none");
+  }
+};
+
+fetchData(url1, false);
