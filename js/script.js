@@ -1,14 +1,22 @@
-const fetchData = () => {
-  fetch("https://openapi.programming-hero.com/api/ai/tools")
+const url1 = "https://openapi.programming-hero.com/api/ai/tools";
+
+const fetchData = (url, load) => {
+  fetch(url)
     .then((res) => res.json())
-    .then((data) => loadData(data));
+    .then((data) => loadData(data, load));
 };
 
-const loadData = (data) => {
-  let allAiData = data.data.tools;
+const loadData = (data, moreLoad) => {
   const cardContainer = document.getElementById("card-container");
-  allAiData = allAiData.slice(0, 6);
+  let allAiData = data.data.tools;
+  if (moreLoad) {
+    allAiData = allAiData;
+  } else {
+    allAiData = allAiData.slice(0, 6);
+  }
 
+  cardContainer.innerHTML = "";
+  console.log(allAiData);
   allAiData.forEach((singleData) => {
     const div = document.createElement("div");
     div.classList.add("col-lg-4", "col-md-6", "mb-4");
@@ -23,9 +31,9 @@ const loadData = (data) => {
               />
               <h5 class="card-title">Features</h5>
               <ol>
-                <li>Text</li>
-                <li>Text</li>
-                <li>Text</li>
+                ${singleData.features
+                  .map((item) => `<li>${item}</li>`)
+                  .join("")}
               </ol>
               <hr
                 style="
@@ -37,9 +45,9 @@ const loadData = (data) => {
               <div class="d-flex justify-content-between">
                 <div>
                   <h5 class="card-title">${singleData.name}</h5>
-                  <p>01/02/2023</p>
+                  <p>${singleData.published_in}</p>
                 </div>
-                <div>xxx</div>
+                <div><span class="bi bi-arrow-right"></span></div>
               </div>
             </div>
           </div>
@@ -50,4 +58,11 @@ const loadData = (data) => {
   });
 };
 
-fetchData();
+fetchData(url1, false);
+
+const seeMore = document
+  .getElementById("see-more")
+  .addEventListener("click", function () {
+    fetchData(url1, true);
+    document.getElementById("see-more").classList.add("d-none");
+  });
