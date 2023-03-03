@@ -1,3 +1,4 @@
+// declaring the value
 const url1 = "https://openapi.programming-hero.com/api/ai/tools";
 let sort = 0;
 let more = 0;
@@ -93,7 +94,7 @@ const seeMoreBtn = document
     document.getElementById("see-more").classList.add("d-none");
   });
 
-// sort
+// sorting data by clicking button
 document.getElementById("sort-data").addEventListener("click", function () {
   sort = 1;
   fetchData(url1, sort, more);
@@ -124,7 +125,6 @@ const toggleSpinner = (isLoading) => {
 };
 
 // Single card display
-
 const singleCardDisplay = (data) => {
   console.log(data.data);
   const modalBody = document.getElementById("modal-body-id");
@@ -298,4 +298,5 @@ const singleCardDisplay = (data) => {
   modalBody.appendChild(modalDiv);
 };
 
+// by default data fetching
 fetchData(url1, sort, more);
