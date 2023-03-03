@@ -1,21 +1,36 @@
 const url1 = "https://openapi.programming-hero.com/api/ai/tools";
+let sort = 0;
+let more = 0;
 
 // fetching data
-const fetchData = (url, load) => {
+const fetchData = (url, sort, more) => {
   toggleSpinner(true);
   fetch(url)
     .then((res) => res.json())
-    .then((data) => loadData(data, load));
+    .then((data) => loadData(data, sort, more));
 };
 
 // load data dynamically
-const loadData = (data, moreLoad) => {
+const loadData = (data, sort, more) => {
   const cardContainer = document.getElementById("card-container");
+
   let allAiData = data.data.tools;
-  if (moreLoad) {
-    allAiData = allAiData;
-  } else {
+
+  console.log(more, sort);
+  if (more === 0 && sort === 0) {
     allAiData = allAiData.slice(0, 6);
+    document.getElementById("see-more").classList.remove("d-none");
+  } else if (more === 1 && sort === 0) {
+    allAiData = allAiData;
+  } else if (more === 1 && sort === 1) {
+    allAiData = allAiData.sort(
+      (a, b) => new Date(a.published_in) - new Date(b.published_in)
+    );
+  } else if (more === 0 && sort === 1) {
+    allAiData = allAiData.slice(0, 6);
+    allAiData = allAiData.sort(
+      (a, b) => new Date(a.published_in) - new Date(b.published_in)
+    );
     document.getElementById("see-more").classList.remove("d-none");
   }
 
@@ -65,7 +80,6 @@ const loadData = (data, moreLoad) => {
     `;
 
     cardContainer.appendChild(div);
-    // console.log(singleData);
   });
   toggleSpinner(false);
 };
@@ -74,20 +88,16 @@ const loadData = (data, moreLoad) => {
 const seeMoreBtn = document
   .getElementById("see-more")
   .addEventListener("click", function () {
-    fetchData(url1, true);
+    more = 1;
+    fetchData(url1, sort, more);
     document.getElementById("see-more").classList.add("d-none");
   });
 
-// loader
-const toggleSpinner = (isLoading) => {
-  const loaderSection = document.getElementById("loader-id");
-
-  if (isLoading) {
-    loaderSection.classList.remove("d-none");
-  } else {
-    loaderSection.classList.add("d-none");
-  }
-};
+// sort
+document.getElementById("sort-data").addEventListener("click", function () {
+  sort = 1;
+  fetchData(url1, sort, more);
+});
 
 // Single card fetching
 const singleCardFetch = (id) => {
@@ -99,6 +109,17 @@ const singleCardFetch = (id) => {
     fetch(`https://openapi.programming-hero.com/api/ai/tool/${id}`)
       .then((res) => res.json())
       .then((data) => singleCardDisplay(data));
+  }
+};
+
+// loader
+const toggleSpinner = (isLoading) => {
+  const loaderSection = document.getElementById("loader-id");
+
+  if (isLoading) {
+    loaderSection.classList.remove("d-none");
+  } else {
+    loaderSection.classList.add("d-none");
   }
 };
 
@@ -255,9 +276,6 @@ const singleCardDisplay = (data) => {
                         : ""
                     }
 
-                  
-
-
                     <h5 class="text-center mt-2">
                       ${
                         data.data.input_output_examples
@@ -280,4 +298,4 @@ const singleCardDisplay = (data) => {
   modalBody.appendChild(modalDiv);
 };
 
-fetchData(url1, false);
+fetchData(url1, sort, more);
