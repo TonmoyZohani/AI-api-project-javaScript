@@ -113,7 +113,7 @@ const singleCardDisplay = (data) => {
      <div class="row">
                 <div
                   class="col-md-6 col-12"
-                  style="max-width: 400px; height:400px"
+                  style="max-width: 400px; height:500px"
                 >
                   <div
                     class="card border-2 border-danger"
@@ -133,7 +133,12 @@ const singleCardDisplay = (data) => {
                           "
                         >
                           <p class="text-center text-success mt-4">
-                            <b>$10/month Basic</b>
+                            ${
+                              data.data.pricing !== null
+                                ? `<b>${data.data.pricing[0].price} ${data.data.pricing[0].plan}</b>`
+                                : `<b>Free of Cost/Basic</b>`
+                            }
+                            
                           </p>
                         </div>
                         <div
@@ -145,7 +150,11 @@ const singleCardDisplay = (data) => {
                           "
                         >
                           <p class="text-center text-warning-emphasis mt-4">
-                            <b>$50/month Pro</b>
+                             ${
+                               data.data.pricing !== null
+                                 ? `<b>${data.data.pricing[1].price} ${data.data.pricing[1].plan}</b>`
+                                 : `<b>Free of Cost/Pro</b>`
+                             }
                           </p>
                         </div>
                         <div
@@ -156,8 +165,12 @@ const singleCardDisplay = (data) => {
                             border-radius: 5px;
                           "
                         >
-                          <p class="text-center mt-4 text-danger">
-                            <b>Contact us Enterprise</b>
+                          <p class="text-center mt-2 text-danger">
+                             ${
+                               data.data.pricing !== null
+                                 ? `<b>${data.data.pricing[2].price} ${data.data.pricing[2].plan}</b>`
+                                 : `<b>&nbspFree of Cost/<br>Enterprise</b>`
+                             }
                           </p>
                         </div>
                       </div>
@@ -173,7 +186,7 @@ const singleCardDisplay = (data) => {
                             height: 150px;
                             border-radius: 5px;
                           "
-                          class="mr-4"
+                          class="mt-4"
                         >
                           <h5>Features</h5>
                           <ul">
@@ -195,6 +208,7 @@ const singleCardDisplay = (data) => {
                             border-radius: 5px;
                             margin-left:4px;
                           "
+                          class="mt-4"
                         >
                           <h5  class="ml-2">Integrations</h5>
                           <ul>
@@ -224,7 +238,9 @@ const singleCardDisplay = (data) => {
                       alt="..."
                     />
 
-                    ${data.data.accuracy.score !== null ? `
+                    ${
+                      data.data.accuracy.score !== null
+                        ? `
                             <div
                       class="p-1 bg-danger text-white rounded position-absolute"
                       style="width: 120px; right: 15px"
@@ -235,7 +251,9 @@ const singleCardDisplay = (data) => {
                           : ""
                       }</b>
                     </div>
-                    `:"" }
+                    `
+                        : ""
+                    }
 
                   
 
