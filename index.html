@@ -49,16 +49,6 @@
 
     <!-- Modal -->
     <section>
-      <!-- Button trigger modal -->
-      <button
-        type="button"
-        class="btn btn-primary"
-        data-bs-toggle="modal"
-        data-bs-target="#exampleModal"
-      >
-        Launch modal
-      </button>
-
       <!-- Modal -->
       <div
         class="modal fade"
@@ -69,7 +59,7 @@
       >
         <div
           class="modal-dialog modal-dialog-centered"
-          style="max-width: 800px"
+          style="max-width: 800px; max-height: 500px"
         >
           <div class="modal-content">
             <div class="modal-header">
@@ -80,8 +70,14 @@
                 aria-label="Close"
               ></button>
             </div>
-            <div class="modal-body">
-              <div class="row">
+
+            <!-- modal body -->
+            <div
+              class="modal-body"
+              id="modal-body-id"
+              style="max-width: 800px; max-height: 700px"
+            >
+              <!-- <div class="row">
                 <div
                   class="col-md-6 col-12"
                   style="max-width: 400px; max-height: 400px"
@@ -173,9 +169,15 @@
                     <img
                       src="https://img.olhardigital.com.br/wp-content/uploads/2023/01/chatgpt_assistente.jpg"
                       style="object-fit: cover; width: 100%; height: 250px"
-                      class="card-img-top rounded img-fluid"
+                      class="card-img-top rounded img-fluid position-relative"
                       alt="..."
                     />
+                    <div
+                      class="p-1 bg-danger text-white rounded position-absolute"
+                      style="width: 120px; right: 15px"
+                    >
+                      <b>94% accuracy</b>
+                    </div>
                     <h5 class="text-center mt-4">
                       Hi, how are you doing today?
                     </h5>
@@ -185,8 +187,9 @@
                     </p>
                   </div>
                 </div>
-              </div>
+              </div> -->
             </div>
+            <!---->
           </div>
         </div>
       </div>

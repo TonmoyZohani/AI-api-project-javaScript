@@ -20,7 +20,6 @@ const loadData = (data, moreLoad) => {
   }
 
   cardContainer.innerHTML = "";
-  console.log(allAiData);
   allAiData.forEach((singleData) => {
     const div = document.createElement("div");
     div.classList.add("col-lg-4", "col-md-6", "mb-4");
@@ -54,8 +53,10 @@ const loadData = (data, moreLoad) => {
 </svg>&nbsp  ${singleData.published_in}</p>
                 </div>
                 <div>
-                <button type="button" class="rounded-circle text-danger border border-danger bg-danger-subtle" data-bs-toggle="modal"
-        data-bs-target="#exampleModal">→</buttpn>
+                <button onclick="singleCardFetch(${
+                  singleData.id
+                })" type="button" class="rounded-circle text-danger border border-danger bg-danger-subtle" data-bs-toggle="modal"
+        data-bs-target="#exampleModal" id="${singleData.id}">→</buttpn>
                 </div>
               </div>
             </div>
@@ -64,7 +65,7 @@ const loadData = (data, moreLoad) => {
     `;
 
     cardContainer.appendChild(div);
-    console.log(singleData);
+    // console.log(singleData);
   });
   toggleSpinner(false);
 };
@@ -86,6 +87,161 @@ const toggleSpinner = (isLoading) => {
   } else {
     loaderSection.classList.add("d-none");
   }
+};
+
+// Single card fetching
+const singleCardFetch = (id) => {
+  if (id < 10) {
+    fetch(`https://openapi.programming-hero.com/api/ai/tool/0${id}`)
+      .then((res) => res.json())
+      .then((data) => singleCardDisplay(data));
+  } else {
+    fetch(`https://openapi.programming-hero.com/api/ai/tool/${id}`)
+      .then((res) => res.json())
+      .then((data) => singleCardDisplay(data));
+  }
+};
+
+// Single card display
+
+const singleCardDisplay = (data) => {
+  console.log(data.data);
+  const modalBody = document.getElementById("modal-body-id");
+  const modalDiv = document.createElement("div");
+  modalBody.innerHTML = "";
+  modalDiv.innerHTML = `
+     <div class="row">
+                <div
+                  class="col-md-6 col-12"
+                  style="max-width: 400px;"
+                >
+                  <div
+                    class="card border-2 border-danger"
+                    style="background-color: rgba(235, 87, 87, 0.05)"
+                  >
+                    <div class="card-body">
+                      <h5 class="card-title">
+                        ${data.data.description}
+                      </h5>
+                      <div class="d-flex justify-content-between">
+                        <div
+                          style="
+                            width: 100px;
+                            height: 100px;
+                            background-color: #fff;
+                            border-radius: 5px;
+                          "
+                        >
+                          <p class="text-center text-success mt-4">
+                            <b>$10/month Basic</b>
+                          </p>
+                        </div>
+                        <div
+                          style="
+                            width: 100px;
+                            height: 100px;
+                            background-color: #fff;
+                            border-radius: 5px;
+                          "
+                        >
+                          <p class="text-center text-warning-emphasis mt-4">
+                            <b>$50/month Pro</b>
+                          </p>
+                        </div>
+                        <div
+                          style="
+                            width: 100px;
+                            height: 100px;
+                            background-color: #fff;
+                            border-radius: 5px;
+                          "
+                        >
+                          <p class="text-center mt-4 text-danger">
+                            <b>Contact us Enterprise</b>
+                          </p>
+                        </div>
+                      </div>
+
+                      <div class="d-flex justify-content-between m1-2" style="
+                           
+                            height: 150px;
+                            
+                          ">
+                        <div
+                          style="
+                            width: 180px;
+                            height: 150px;
+                            border-radius: 5px;
+                          "
+                          class="mr-4"
+                        >
+                          <h5>Features</h5>
+                          <ul">
+                            <li><small> Customizable responses</small></li>
+                            <li><small> Multilingual support</small></li>
+                            <li><small> Seamless integration</small></li>
+                          </ul>
+                        </div>
+
+                        <div
+                          style="
+                            width: 160px;
+                            height: 100px;
+                            border-radius: 5px;
+                          "
+                        >
+                          <h5>Integrations</h5>
+                          <ul>
+                            ${data.data.integrations
+                              .map(
+                                (item) => `<li> <small> ${item}</small></li>`
+                              )
+                              .join("")}
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-6 col-12" >
+                  <div class="card p-3" style="height: 100%">
+                    <img
+                      src="${data.data.image_link[0]}"
+                      style="object-fit: cover; width: 100%; height: 220px"
+                      class="card-img-top rounded img-fluid position-relative"
+                      alt="..."
+                    />
+                    <div
+                      class="p-1 bg-danger text-white rounded position-absolute"
+                      style="width: 120px; right: 15px"
+                    >
+                      <b>${
+                        data.data.accuracy.score !== null
+                          ? data.data.accuracy.score * 100
+                          : ""
+                      }% accuracy</b>
+                    </div>
+                    <h5 class="text-center mt-2">
+                      ${
+                        data.data.input_output_examples
+                          ? data.data.input_output_examples[0].input
+                          : "Can you give any example?"
+                      }
+                    </h5>
+                    <p class="text-center text-muted">
+                      ${
+                        data.data.input_output_examples
+                          ? data.data.input_output_examples[0].output
+                          : "No! Not Yet! Take a break!!!"
+                      }
+                    </p>
+                  </div>
+                </div>
+              </div>
+  `;
+
+  modalBody.appendChild(modalDiv);
 };
 
 fetchData(url1, false);
