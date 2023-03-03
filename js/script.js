@@ -113,17 +113,17 @@ const singleCardDisplay = (data) => {
      <div class="row">
                 <div
                   class="col-md-6 col-12"
-                  style="max-width: 400px;"
+                  style="max-width: 400px; height:400px"
                 >
                   <div
                     class="card border-2 border-danger"
-                    style="background-color: rgba(235, 87, 87, 0.05)"
+                    style="background-color: rgba(235, 87, 87, 0.05) ; height: 100%"
                   >
                     <div class="card-body">
                       <h5 class="card-title">
                         ${data.data.description}
                       </h5>
-                      <div class="d-flex justify-content-between">
+                      <div class="d-flex justify-content-between"">
                         <div
                           style="
                             width: 100px;
@@ -162,7 +162,7 @@ const singleCardDisplay = (data) => {
                         </div>
                       </div>
 
-                      <div class="d-flex justify-content-between m1-2" style="
+                      <div class="d-flex" style="
                            
                             height: 150px;
                             
@@ -177,9 +177,14 @@ const singleCardDisplay = (data) => {
                         >
                           <h5>Features</h5>
                           <ul">
-                            <li><small> Customizable responses</small></li>
-                            <li><small> Multilingual support</small></li>
-                            <li><small> Seamless integration</small></li>
+                            <ul>
+                               ${Object.values(data.data.features)
+                                 .map(
+                                   (feature) =>
+                                     `<li><small>${feature.feature_name}</small></li>`
+                                 )
+                                 .join("")}
+                                      </ul>
                           </ul>
                         </div>
 
@@ -188,15 +193,21 @@ const singleCardDisplay = (data) => {
                             width: 160px;
                             height: 100px;
                             border-radius: 5px;
+                            margin-left:4px;
                           "
                         >
-                          <h5>Integrations</h5>
+                          <h5  class="ml-2">Integrations</h5>
                           <ul>
-                            ${data.data.integrations
-                              .map(
-                                (item) => `<li> <small> ${item}</small></li>`
-                              )
-                              .join("")}
+                            ${
+                              data.data.integrations
+                                ? data.data.integrations
+                                    .map(
+                                      (item) =>
+                                        `<li style="margin-bottom: 0.5px;"> <small> ${item}</small></li>`
+                                    )
+                                    .join("")
+                                : `<p class="text-danger"><small>No Data Found</small></p>`
+                            }
                           </ul>
                         </div>
                       </div>
@@ -212,16 +223,23 @@ const singleCardDisplay = (data) => {
                       class="card-img-top rounded img-fluid position-relative"
                       alt="..."
                     />
-                    <div
+
+                    ${data.data.accuracy.score !== null ? `
+                            <div
                       class="p-1 bg-danger text-white rounded position-absolute"
                       style="width: 120px; right: 15px"
                     >
                       <b>${
                         data.data.accuracy.score !== null
-                          ? data.data.accuracy.score * 100
+                          ? `${data.data.accuracy.score * 100} % accuracy`
                           : ""
-                      }% accuracy</b>
+                      }</b>
                     </div>
+                    `:"" }
+
+                  
+
+
                     <h5 class="text-center mt-2">
                       ${
                         data.data.input_output_examples
