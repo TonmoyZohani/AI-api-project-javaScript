@@ -54,7 +54,8 @@ const loadData = (data, moreLoad) => {
 </svg>&nbsp  ${singleData.published_in}</p>
                 </div>
                 <div>
-                <button class="rounded-circle text-danger border border-danger bg-danger-subtle">→</buttpn>
+                <button type="button" class="rounded-circle text-danger border border-danger bg-danger-subtle" data-bs-toggle="modal"
+        data-bs-target="#exampleModal">→</buttpn>
                 </div>
               </div>
             </div>
