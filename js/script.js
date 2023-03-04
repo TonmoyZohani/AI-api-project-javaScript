@@ -268,7 +268,7 @@ const singleCardDisplay = (data) => {
                     >
                       <b>${
                         data.data.accuracy.score !== null
-                          ? `${data.data.accuracy.score * 100} % accuracy`
+                          ? `${data.data.accuracy.score * 100}% accuracy`
                           : ""
                       }</b>
                     </div>
